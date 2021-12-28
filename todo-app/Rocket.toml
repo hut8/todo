@@ -1,0 +1,2 @@
+[global.databases.todo]
+url = "postgres://postgres:postgres@localhost/todo"
