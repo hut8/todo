@@ -1,18 +1,19 @@
 use rocket::serde::{Serialize, Deserialize};
-use rocket::serde::json::Json;
 use chrono::{DateTime, Utc};
+use crate::schema::tasks::dsl::*;
+use diesel::prelude::*;
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize, Deserialize, Queryable)]
 pub struct Task {
+    pub id: i32,
     pub description: String,
     pub completed: bool,
-    pub created_at: DateTime<Utc>,
+    pub created_at: chrono::NaiveDateTime,
 }
 
-pub fn new_task(description: String) -> Task {
-    Task{
-        description,
-        completed: false,
-        created_at: Utc::now(),
-    }
+pub fn load_tasks(conn: &diesel::PgConnection) -> Vec<Task> {
+    let results = tasks
+    .filter(completed.eq(false))
+    .load::<Task>(conn).expect("load tasks");
+    results
 }

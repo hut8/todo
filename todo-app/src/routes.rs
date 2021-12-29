@@ -1,5 +1,4 @@
 use crate::DbConn;
-use chrono::Utc;
 use rocket::serde::{json::Json};
 use crate::models::*;
 
@@ -8,11 +7,10 @@ pub fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/tasks")]
-pub fn tasks_index(mut conn: DbConn) -> Json<Task> {
-    Json(Task{
-        completed: false,
-        created_at: Utc::now(),
-        description: "test".into(),
-    })
+#[get("/")]
+pub async fn tasks_index(conn: DbConn) -> Json<Vec<Task>> {
+    let tasks: Vec<Task> = conn
+    .run(|c| load_tasks(c))
+    .await;
+    Json(tasks)
 }

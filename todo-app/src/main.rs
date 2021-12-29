@@ -10,8 +10,8 @@ extern crate rocket_sync_db_pools;
 extern crate chrono;
 extern crate serde;
 extern crate serde_json;
-#[macro_use]
-extern crate serde_derive;
+// #[macro_use]
+// extern crate serde_derive;
 
 #[macro_use]
 extern crate diesel;
@@ -22,6 +22,7 @@ pub struct DbConn(diesel::PgConnection);
 
 #[launch]
 fn rocket() -> _ {
+    println!("TODO App");
     rocket::build()
     .attach(DbConn::fairing())
     .attach(cors::CorsFairing)
