@@ -22,10 +22,31 @@ pub struct DbConn(diesel::PgConnection);
 
 #[launch]
 fn rocket() -> _ {
-    println!("TODO App");
     rocket::build()
     .attach(DbConn::fairing())
     .attach(cors::CorsFairing)
     .mount("/", routes![routes::index])
-    .mount("/tasks", routes![routes::tasks_index])
+    .mount("/tasks", routes![
+        routes::tasks_index,
+        routes::tasks_create])
+}
+
+#[cfg(test)]
+mod test {
+    use super::rocket;
+    use rocket::local::blocking::Client;
+    use rocket::http::Status;
+
+    #[test]
+    fn test_test() {
+        // Nothing
+    }
+
+    #[test]
+    fn hello_world() {
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let response = client.get("/").dispatch();
+        assert_eq!(response.status(), Status::Ok);
+        assert_eq!(response.into_string().unwrap(), "Hello, world!");
+    }
 }
