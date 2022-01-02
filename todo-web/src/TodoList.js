@@ -6,7 +6,7 @@ const TodoList = (props) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const LIST_URL = "https://127.0.0.1:8000/tasks";
+    const LIST_URL = "http://127.0.0.1:8000/tasks";
 
     useEffect(() => {
         fetch(LIST_URL)

@@ -1,5 +1,5 @@
 use rocket::serde::{Serialize, Deserialize};
-use chrono::{NaiveDateTime};
+use chrono::{NaiveDateTime, Utc};
 use diesel::prelude::*;
 use crate::schema::tasks;
 
@@ -28,8 +28,10 @@ impl Task {
         results
     }
     
-    pub fn create(conn: &diesel::PgConnection, t: NewTask) -> Task {
+    pub fn create(conn: &diesel::PgConnection, mut t: NewTask) -> Task {
         use crate::schema::tasks::dsl::*;
+        t.created_at = Utc::now().naive_utc();
+        t.completed = false;
         let result = diesel::insert_into(tasks)
         .values(t)
         .get_result(conn).expect("create task");
