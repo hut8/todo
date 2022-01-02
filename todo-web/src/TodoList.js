@@ -28,8 +28,14 @@ const TodoList = (props) => {
 
     if (error) {
         return (
-            <b>{error}</b>
+            <b>Error: {error.message}</b>
         );
+    }
+
+    if (!isLoaded) {
+      return (
+        <b>Loading...</b>
+      );
     }
 
     return (

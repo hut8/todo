@@ -1,4 +1,5 @@
 import TodoList from "./TodoList";
+import AddTodo from "./AddTodo";
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
         <h1>Todo List</h1>
       </header>
       <TodoList />
+      <AddTodo />
     </div>
   );
 }
