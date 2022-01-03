@@ -41,7 +41,7 @@ const TodoList = (props) => {
     return (
         <>
             {items.map((task) => (
-                <TodoItem task={task} />
+                <TodoItem key={task.id} task={task} />
             ))}
         </>
     )

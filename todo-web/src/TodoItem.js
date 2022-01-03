@@ -3,11 +3,18 @@ import PropTypes from 'prop-types'
 
 function TodoItem(props) {
     let task = props.task;
+
+    const completedChange = (e) => {
+        console.log(`completedChange: ${e.target.value}`);
+    }
+
     return (
-        <div class="todo-item">
+        <div className="todo-item">
             <div>{task.description}</div>
             <div>{task.created_at}</div>
-            <div><input type="checkbox" checked={task.completed} /></div>
+            <div><input type="checkbox"
+                onChange={(e) => completedChange(e)}
+                checked={task.completed} /></div>
         </div>
     )
 }
