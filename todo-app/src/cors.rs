@@ -14,7 +14,7 @@ impl Fairing for CorsFairing {
 
         response.set_header(rocket::http::Header::new(
             "Access-Control-Allow-Headers",
-            "application/json",
+            "Content-Type, x-requested-with",
         ));
 
         // Respond to all `OPTIONS` requests with a `204` (no content) status
