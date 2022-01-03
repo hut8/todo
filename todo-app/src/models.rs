@@ -13,10 +13,8 @@ pub struct Task {
 
 #[derive(Serialize, Deserialize, Insertable)]
 #[table_name = "tasks"]
-pub struct NewTask {
+pub struct TaskForm {
     pub description: String,
-    pub completed: bool,
-    pub created_at: NaiveDateTime,
 }
 
 impl Task {
@@ -28,10 +26,8 @@ impl Task {
         results
     }
     
-    pub fn create(conn: &diesel::PgConnection, mut t: NewTask) -> Task {
+    pub fn create(conn: &diesel::PgConnection, mut t: TaskForm) -> Task {
         use crate::schema::tasks::dsl::*;
-        t.created_at = Utc::now().naive_utc();
-        t.completed = false;
         let result = diesel::insert_into(tasks)
         .values(t)
         .get_result(conn).expect("create task");
