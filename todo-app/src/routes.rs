@@ -1,5 +1,5 @@
 use crate::DbConn;
-use rocket::serde::{json::Json};
+use rocket::{serde::{json::Json}, response::status};
 use crate::models::*;
 
 #[get("/")]
@@ -16,12 +16,18 @@ pub async fn tasks_index(conn: DbConn) -> Json<Vec<Task>> {
 }
 
 #[post("/", format="application/json", data = "<new_task>")]
-pub async fn tasks_create(conn: DbConn, new_task: Json<TaskForm>) -> Json<Task> {
+pub async fn tasks_create(conn: DbConn, new_task: Json<TaskForm>) -> status::Created<Json<Task>> {
     let t = new_task.0;
     let task = conn.run(|c| Task::create(c, t)).await;
-    Json(task)
+    status::Created::new(format!("/tasks/{}", task.id))
+        .body(Json(task))
 }
 
+#[get("/<id>")]
+pub async fn tasks_show(conn: DbConn, id: u64) -> Json<Task> {
+    let task = conn.run(move |c| Task::get(c, id)).await;
+    Json(task)
+}
 #[cfg(test)]
 mod test {
     use crate::models::TaskForm;
