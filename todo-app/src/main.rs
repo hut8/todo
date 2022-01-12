@@ -38,11 +38,6 @@ mod test {
     use rocket::http::Status;
 
     #[test]
-    fn test_test() {
-        // Nothing
-    }
-
-    #[test]
     fn hello_world() {
         let client = Client::tracked(rocket()).expect("valid rocket instance");
         let response = client.get("/").dispatch();

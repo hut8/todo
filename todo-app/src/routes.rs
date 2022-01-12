@@ -21,3 +21,22 @@ pub async fn tasks_create(conn: DbConn, new_task: Json<TaskForm>) -> Json<Task> 
     let task = conn.run(|c| Task::create(c, t)).await;
     Json(task)
 }
+
+#[cfg(test)]
+mod test {
+    use crate::models::TaskForm;
+    use crate::rocket;
+    use rocket::local::blocking::Client;
+    use rocket::http::{ContentType, Status};
+
+    #[test]
+    fn create_task() {
+        let form = TaskForm{
+            description: "New Task".into(),
+        };
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let response = client.post("/tasks").json(&form).dispatch();
+        assert_eq!(response.status(), Status::Created);
+        assert_eq!(response.content_type(), Some(ContentType::JSON));
+    }
+}
