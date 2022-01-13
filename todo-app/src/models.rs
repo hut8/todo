@@ -52,5 +52,10 @@ impl Task {
         let result = tasks.find(id).first::<Task>(conn).expect("get task");
         result
     }
+
+    pub fn delete(conn: &diesel::PgConnection, id: i32) {
+        use crate::schema::tasks::dsl::tasks;
+        diesel::delete(tasks.find(id)).execute(conn).expect("delete task");
+    }
 }
 
