@@ -29,7 +29,8 @@ fn rocket() -> _ {
     .mount("/tasks", routes![
         routes::tasks_index,
         routes::tasks_create,
-        routes::tasks_show])
+        routes::tasks_show,
+        routes::tasks_delete])
 }
 
 #[cfg(test)]

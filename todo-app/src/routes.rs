@@ -30,6 +30,12 @@ pub async fn tasks_show(conn: DbConn, id: i32) -> Json<Task> {
     Json(task)
 }
 
+#[delete("/<id>")]
+pub async fn tasks_delete(conn: DbConn, id: i32) -> status::NoContent {
+    conn.run(move |c| Task::delete(c, id)).await;
+    status::NoContent
+}
+
 
 #[cfg(test)]
 mod test {
