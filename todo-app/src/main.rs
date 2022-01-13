@@ -28,7 +28,8 @@ fn rocket() -> _ {
     .mount("/", routes![routes::index])
     .mount("/tasks", routes![
         routes::tasks_index,
-        routes::tasks_create])
+        routes::tasks_create,
+        routes::tasks_show])
 }
 
 #[cfg(test)]
