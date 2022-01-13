@@ -19,15 +19,18 @@ pub async fn tasks_index(conn: DbConn) -> Json<Vec<Task>> {
 pub async fn tasks_create(conn: DbConn, new_task: Json<TaskForm>) -> status::Created<Json<Task>> {
     let t = new_task.0;
     let task = conn.run(|c| Task::create(c, t)).await;
-    status::Created::new(format!("/tasks/{}", task.id))
+    let loc = uri!(tasks_show(id=task.id)); // format!("/tasks/{}", task.id)
+    status::Created::new(loc.to_string())
         .body(Json(task))
 }
 
 #[get("/<id>")]
-pub async fn tasks_show(conn: DbConn, id: u64) -> Json<Task> {
+pub async fn tasks_show(conn: DbConn, id: i32) -> Json<Task> {
     let task = conn.run(move |c| Task::get(c, id)).await;
     Json(task)
 }
+
+
 #[cfg(test)]
 mod test {
     use crate::models::TaskForm;
