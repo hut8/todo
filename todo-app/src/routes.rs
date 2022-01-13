@@ -39,13 +39,27 @@ mod test {
     use rocket::http::{ContentType, Status};
 
     #[test]
-    fn create_task() {
+    fn tasks_create() {
         let form = TaskForm{
             description: "New Task".into(),
         };
         let client = Client::tracked(rocket()).expect("valid rocket instance");
         let response = client.post("/tasks").json(&form).dispatch();
         assert_eq!(response.status(), Status::Created);
+        assert_eq!(response.content_type(), Some(ContentType::JSON));
+    }
+
+    #[async_test]
+    async fn tasks_show() {
+        let r = rocket();
+        let db = crate::DbConn::get_one(&r).await.unwrap();
+        let t = db.run(|c| crate::models::Task::create(c , TaskForm{
+            description: String::from("test task"),
+        })).await;
+        let client = Client::tracked(r).expect("valid rocket instance");
+        // let u = uri!(crate::tasks_show(id=t.id));
+        let response = client.get(format!("/tasks/{}", t.id)).dispatch();
+        assert_eq!(response.status(), Status::Ok);
         assert_eq!(response.content_type(), Some(ContentType::JSON));
     }
 }
