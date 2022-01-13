@@ -47,8 +47,8 @@ impl Task {
         result
     }
 
-    pub fn get(conn: &diesel::PgConnection, id: u64) -> Task {
-        use crate::schema::tasks::dsl::*;
+    pub fn get(conn: &diesel::PgConnection, id: i32) -> Task {
+        use crate::schema::tasks::dsl::tasks;
         let result = tasks.find(id).first::<Task>(conn).expect("get task");
         result
     }
