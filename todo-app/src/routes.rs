@@ -35,6 +35,7 @@ pub async fn tasks_show(conn: DbConn, id: i32) -> Json<Task> {
 mod test {
     use crate::models::TaskForm;
     use crate::rocket;
+    use rocket::local::asynchronous;
     use rocket::local::blocking::Client;
     use rocket::http::{ContentType, Status};
 
@@ -52,13 +53,13 @@ mod test {
     #[async_test]
     async fn tasks_show() {
         let r = rocket();
-        let db = crate::DbConn::get_one(&r).await.unwrap();
+        let client = asynchronous::Client::tracked(r).await.expect("valid rocket instance");
+        let db = crate::DbConn::get_one(client.rocket()).await.unwrap();
         let t = db.run(|c| crate::models::Task::create(c , TaskForm{
             description: String::from("test task"),
         })).await;
-        let client = Client::tracked(r).expect("valid rocket instance");
         // let u = uri!(crate::tasks_show(id=t.id));
-        let response = client.get(format!("/tasks/{}", t.id)).dispatch();
+        let response = client.get(format!("/tasks/{}", t.id)).dispatch().await;
         assert_eq!(response.status(), Status::Ok);
         assert_eq!(response.content_type(), Some(ContentType::JSON));
     }
