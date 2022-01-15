@@ -9,21 +9,20 @@ function TodoItem(props) {
     }
 
     return (
-        <div className="todo-item">
-            <div>{task.description}</div>
-            <div>{task.created_at}</div>
-            <div><input type="checkbox"
+        <tr className="todo-item">
+            <td>{task.description}</td>
+            <td>{task.created_at}</td>
+            <td><input type="checkbox"
                 onChange={(e) => completedChange(e)}
-                checked={task.completed} /></div>
-        </div>
+                checked={task.completed} /></td>
+            <td>❌</td>
+        </tr>
     )
 }
 
 TodoItem.propTypes = {
-    description: PropTypes.string.isRequired,
-    created_at: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired,
-}
+    task: PropTypes.object.isRequired,
+};
 
-export default TodoItem
+export default TodoItem;
 

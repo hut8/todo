@@ -1,5 +1,5 @@
-import React from 'react'
-import TodoItem from './TodoItem'
+import React from 'react';
+import TodoItem from './TodoItem';
 import { useState, useEffect } from 'react';
 
 const TodoList = (props) => {
@@ -39,12 +39,22 @@ const TodoList = (props) => {
     }
 
     return (
-        <>
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>📅</th>
+              <th>✔</th>
+              <th>❌</th>
+            </tr>
+          </thead>
+          <tbody>
             {items.map((task) => (
                 <TodoItem key={task.id} task={task} />
             ))}
-        </>
-    )
+          </tbody>
+        </table>
+    );
 }
 
-export default TodoList
+export default TodoList;
