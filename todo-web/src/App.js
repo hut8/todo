@@ -7,10 +7,13 @@ function App() {
       <header>
         <h1>Todo List</h1>
       </header>
-      <TodoList />
-      <AddTodo />
+      <div>
+        <AddTodo />
+        <TodoList />
+      </div>
     </div>
-  );
-}
-
-export default App;
+    );
+  }
+  
+  export default App;
+  

@@ -10,8 +10,7 @@ function AddTodo(props) {
         axios.post('http://localhost:8000/tasks', {
             description
         }, {crossdomain:true});
-        alert("Submitting");
-    }
+    };
 
     return (
         <div>
@@ -19,7 +18,9 @@ function AddTodo(props) {
                 <input
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)}
-                    name="description" />
+                    name="description" 
+                    placeholder='New Task...'
+                    />
                 <input type="submit" />
             </form>
         </div>
