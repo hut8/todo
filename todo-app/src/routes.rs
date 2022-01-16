@@ -36,6 +36,13 @@ pub async fn tasks_delete(conn: DbConn, id: i32) -> status::NoContent {
     status::NoContent
 }
 
+#[put("/<id>",format="application/json", data = "<task>")]
+pub async fn tasks_update(conn: DbConn, id: i32, task: Json<Task>) -> status::NoContent {
+    let t = task.0;
+    conn.run(move |c| Task::update_completed(c, id, t.completed)).await;
+    status::NoContent
+}
+
 
 #[cfg(test)]
 mod test {
