@@ -8,9 +8,8 @@ function TodoItem(props) {
     let task = props.task;
     let loadItems = props.loadItems;
 
-    const toggleCompleted = (e) => {
-        const completed = e.target.value;
-        console.log(`toggleCompleted: ${task.id} ${completed}`);
+    const toggleCompleted = (task) => {
+        task.completed = !task.completed;
         let url = new URL(Settings.apiBase);
         url.pathname = `${url.pathname}/${task.id}`;
         let response = axios.put(url, task);
@@ -37,9 +36,11 @@ function TodoItem(props) {
         <tr className="todo-item">
             <td>{task.description}</td>
             <td>{dt.format('LLLL')}</td>
-            <td><input type="checkbox"
-                onChange={(e) => toggleCompleted(e)}
-                checked={task.completed} /></td>
+            <td>
+                <input type="checkbox"
+                    onChange={() => toggleCompleted(task)}
+                    checked={task.completed} />
+            </td>
             <td style={{cursor: 'pointer'}} onClick={() => deleteItem(task)}>
                 ❌
             </td>
