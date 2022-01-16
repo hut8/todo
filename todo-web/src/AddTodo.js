@@ -13,8 +13,8 @@ function AddTodo(props) {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className='row'>
+            <form autoComplete='off' onSubmit={handleSubmit}>
                 <input
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)}
