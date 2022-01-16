@@ -17,6 +17,11 @@ impl Fairing for CorsFairing {
             "Content-Type, x-requested-with",
         ));
 
+        response.set_header(rocket::http::Header::new(
+            "Access-Control-Allow-Methods",
+            "GET, POST, OPTIONS, PUT, DELETE",
+        ));
+
         // Respond to all `OPTIONS` requests with a `204` (no content) status
         if response.status() == Status::NotFound && request.method() == Method::Options {
             response.set_status(Status::NoContent);
