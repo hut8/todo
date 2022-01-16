@@ -3,7 +3,7 @@ use chrono::{NaiveDateTime, Utc};
 use diesel::prelude::*;
 use crate::schema::tasks;
 
-#[derive(Serialize, Deserialize, Queryable)]
+#[derive(Serialize, Deserialize, Queryable, Identifiable)]
 pub struct Task {
     pub id: i32,
     pub description: String,
@@ -56,6 +56,14 @@ impl Task {
     pub fn delete(conn: &diesel::PgConnection, id: i32) {
         use crate::schema::tasks::dsl::tasks;
         diesel::delete(tasks.find(id)).execute(conn).expect("delete task");
+    }
+
+    pub fn update_completed(conn: &diesel::PgConnection, id: i32, completed_state: bool) {
+        use crate::schema::tasks::dsl::{tasks, completed};
+        diesel::update(tasks.find(id))
+            .set(completed.eq(completed_state))
+            .execute(conn)
+            .expect("updated completion status for task");
     }
 }
 
