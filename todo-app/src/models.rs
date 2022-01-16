@@ -29,7 +29,8 @@ impl Task {
     pub fn all(conn: &diesel::PgConnection) -> Vec<Task> {
         use crate::schema::tasks::dsl::*;
         let results = tasks
-        .filter(completed.eq(false))
+        // .filter(completed.eq(false))
+        .order(created_at)
         .load::<Task>(conn).expect("load tasks");
         results
     }
