@@ -29,7 +29,7 @@ function AddTodo(props) {
 
 AddTodo.propTypes = {
 
-}
+};
 
-export default AddTodo
+export default AddTodo;
 

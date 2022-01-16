@@ -10,7 +10,7 @@ function TodoItem(props) {
 
     const toggleCompleted = (e) => {
         const completed = e.target.value;
-        console.log(`toggleCompleted: ${task.id} ${e.target.value}`);
+        console.log(`toggleCompleted: ${task.id} ${completed}`);
         let url = new URL(Settings.apiBase);
         url.pathname = `${url.pathname}/${task.id}`;
         let response = axios.put(url, task);
@@ -26,7 +26,7 @@ function TodoItem(props) {
         console.log(`deleteItem: ${task.id}`);
         let response = axios.delete(url);
         response.then((v) => {
-            console.log("delete",task.id,v.statusText);
+            console.log("delete", task.id, v.statusText);
             loadItems();
         });
     };
