@@ -2,12 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Settings from './Settings';
 import axios from 'axios';
+import moment from 'moment';
 
 function TodoItem(props) {
     let task = props.task;
+    let loadItems = props.loadItems;
 
-    const completedChange = (e) => {
-        console.log(`completedChange: ${e.target.value}`);
+    const toggleCompleted = (e) => {
+        const completed = e.target.value;
+        console.log(`toggleCompleted: ${task.id} ${e.target.value}`);
+        let url = new URL(Settings.apiBase);
+        url.pathname = `${url.pathname}/${task.id}`;
+        let response = axios.put(url);
+        response.then((v) => {
+            console.log("updated: ", task.id, v.statusText);
+            loadItems();
+        });
     };
 
     const deleteItem = (task) => {
@@ -15,15 +25,20 @@ function TodoItem(props) {
         url.pathname = `${url.pathname}/${task.id}`;
         console.log(`deleteItem: ${task.id}`);
         let response = axios.delete(url);
-        response.then((v) => console.log("delete",task.id,v.statusText));
+        response.then((v) => {
+            console.log("delete",task.id,v.statusText);
+            loadItems();
+        });
     };
+
+    const dt = moment(task.created_at);
 
     return (
         <tr className="todo-item">
             <td>{task.description}</td>
-            <td>{task.created_at}</td>
+            <td>{dt.format('LLLL')}</td>
             <td><input type="checkbox"
-                onChange={(e) => completedChange(e)}
+                onChange={(e) => toggleCompleted(e)}
                 checked={task.completed} /></td>
             <td style={{cursor: 'pointer'}} onClick={() => deleteItem(task)}>
                 ❌
@@ -34,6 +49,7 @@ function TodoItem(props) {
 
 TodoItem.propTypes = {
     task: PropTypes.object.isRequired,
+    loadItems: PropTypes.func.isRequired,
 };
 
 export default TodoItem;
