@@ -13,7 +13,7 @@ function TodoItem(props) {
         console.log(`toggleCompleted: ${task.id} ${e.target.value}`);
         let url = new URL(Settings.apiBase);
         url.pathname = `${url.pathname}/${task.id}`;
-        let response = axios.put(url);
+        let response = axios.put(url, task);
         response.then((v) => {
             console.log("updated: ", task.id, v.statusText);
             loadItems();
