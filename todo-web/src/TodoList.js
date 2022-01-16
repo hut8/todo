@@ -8,23 +8,25 @@ const TodoList = (props) => {
     const [items, setItems] = useState([]);
     const LIST_URL = "http://127.0.0.1:8000/tasks";
 
-    useEffect(() => {
-        fetch(LIST_URL)
-          .then(res => res.json())
-          .then(
-            (result) => {
-              setIsLoaded(true);
-              setItems(result);
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
-            }
-          )
-      }, []);
+    const loadItems = () => {
+      fetch(LIST_URL)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            setIsLoaded(true);
+            setItems(result);
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            setIsLoaded(true);
+            setError(error);
+          }
+        )
+    };
+
+    useEffect(loadItems, []);
 
     if (error) {
         return (
@@ -39,7 +41,7 @@ const TodoList = (props) => {
     }
 
     return (
-        <table>
+        <table className='table table-hover table-striped'>
           <thead>
             <tr>
               <th>Description</th>
@@ -50,7 +52,7 @@ const TodoList = (props) => {
           </thead>
           <tbody>
             {items.map((task) => (
-                <TodoItem key={task.id} task={task} />
+                <TodoItem loadItems={loadItems} key={task.id} task={task} />
             ))}
           </tbody>
         </table>
