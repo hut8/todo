@@ -1,12 +1,14 @@
 import React from 'react';
 import TodoItem from './TodoItem';
+import AddTodo from './AddTodo';
+import Settings from './Settings';
 import { useState, useEffect } from 'react';
 
 const TodoList = (props) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const LIST_URL = "http://127.0.0.1:8000/tasks";
+    const LIST_URL = new URL(Settings.apiBase);
 
     const loadItems = () => {
       fetch(LIST_URL)
@@ -41,6 +43,8 @@ const TodoList = (props) => {
     }
 
     return (
+      <>
+        <AddTodo loadItems={loadItems} />
         <table className='table table-hover table-striped'>
           <thead>
             <tr>
@@ -56,6 +60,7 @@ const TodoList = (props) => {
             ))}
           </tbody>
         </table>
+      </>
     );
 }
 

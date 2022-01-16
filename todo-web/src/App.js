@@ -1,5 +1,4 @@
 import TodoList from "./TodoList";
-import AddTodo from "./AddTodo";
 
 function App() {
   return (
@@ -7,8 +6,7 @@ function App() {
       <header className="row">
         <h1>Todo List</h1>
       </header>
-      <div>
-        <AddTodo />
+      <div>       
         <TodoList />
       </div>
      </>
