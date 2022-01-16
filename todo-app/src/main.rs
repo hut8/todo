@@ -30,6 +30,7 @@ fn rocket() -> _ {
         routes::tasks_index,
         routes::tasks_create,
         routes::tasks_show,
+        routes::tasks_update,
         routes::tasks_delete])
 }
 
